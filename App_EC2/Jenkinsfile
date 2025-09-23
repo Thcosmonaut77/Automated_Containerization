@@ -31,6 +31,7 @@ pipeline {
                     """
 
                     sh """
+                        cd App_EC2
                         terraform init
                         terraform validate
                         terraform plan -var-file=terraform.tfvars
