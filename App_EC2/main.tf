@@ -136,7 +136,7 @@ resource "aws_instance" "instance" {
 }
 
 resource "null_resource" "docker_setup" {
-  depends_on = [aws_instance.app] # replace with your EC2 resource name
+  depends_on = [aws_instance.instance] # replace with your EC2 resource name
 
   provisioner "remote-exec" {
     inline = [
