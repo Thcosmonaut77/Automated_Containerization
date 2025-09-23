@@ -3,10 +3,6 @@ variable "region" {
     type = string
 }
 
-variable "profile" {
-    description = "AWS profile"
-    type = string
-}
 
 variable "az" {
     description = "Availability zone"
