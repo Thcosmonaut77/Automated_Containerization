@@ -25,3 +25,9 @@ variable "kp" {
     type = string
     sensitive = true
 }
+
+variable "private_key" {
+    description = "private key"
+    type = string
+  
+}
