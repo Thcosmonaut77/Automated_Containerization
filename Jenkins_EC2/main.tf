@@ -10,7 +10,7 @@ resource "aws_vpc" "main" {
     enable_dns_hostnames = true
 
     tags = {
-      Name = "App_VPC"
+      Name = "Jenkins_VPC"
     }
 }
 
@@ -56,7 +56,7 @@ resource "aws_security_group" "firewall" {
         from_port = 22
         to_port = 22
         protocol = "tcp"
-        cidr_blocks = ["0.0.0.0/0"]
+        cidr_blocks = [var.my_ip]
     }
 
     ingress {

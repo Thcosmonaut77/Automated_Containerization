@@ -1,5 +1,21 @@
 #!/bin/bash
 set -e
+export DEBIAN_FRONTEND=noninteractive
+
+# Ensure cloud-init has finished network setup
+sleep 30
+
+echo "===== Installing Terraform ====="
+wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com jammy main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+
+# Run update twice to ensure repo is active
+sudo apt-get update -y || true
+sudo apt-get update -y
+
+sudo apt-get install -y terraform
 
 echo "===== Updating system packages ====="
 sudo apt-get update -y
@@ -23,29 +39,29 @@ sudo apt-get install -y jenkins
 echo "===== Installing Maven build tool ====="
 sudo apt-get install -y maven
 
-sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-key fingerprint 0EBFCD88
+echo "===== Installing Docker ====="
+sudo apt-get install -y apt-transport-https ca-certificates curl gnupg lsb-release
+
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | \
+    sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
 sudo apt-get update -y
-sudo apt-get install docker-ce docker-ce-cli containerd.io -y
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
 sudo usermod -aG docker ubuntu
-sudo usermod -aG docker $USER 
+sudo usermod -aG docker $USER
 sudo usermod -aG docker jenkins
 
-# Install dependencies
-sudo apt-get install -y wget gnupg software-properties-common unzip
 
-echo "===== Installing Terraform 1.13.0 ====="
-cd /tmp
-wget https://releases.hashicorp.com/terraform/1.13.0/terraform_1.13.0_linux_amd64.zip
-unzip terraform_1.13.0_linux_amd64.zip
-sudo mv terraform /usr/local/bin/
-sudo chmod +x /usr/local/bin/terraform
 
 echo "===== Enabling and starting Jenkins ====="
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
+
+
 
 echo "===== Jenkins installation complete ====="
 echo "Initial Jenkins admin password:"
