@@ -39,7 +39,7 @@ pipeline {
             steps {
                 sshagent([SSH_CRED]) {
                     sh """
-                        ssh -o StrictHostKeyChecking=no $EC2_HOST \\
+                        ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $EC2_HOST \
                         'docker stop app || true && docker rm app || true && \\
                          docker pull ${IMAGE_NAME}:${BUILD_NUMBER} && \\
                          docker run -d --name app -p 8080:8080 ${IMAGE_NAME}:${BUILD_NUMBER}'
