@@ -161,7 +161,7 @@ resource "null_resource" "docker_setup" {
     connection {
       type        = "ssh"
       user        = "ubuntu"
-      private_key = file(var.ec2-ssh-key)
+      private_key = file(var.ec2_ssh_key)
       host        = aws_instance.instance.public_ip
     }
   }
