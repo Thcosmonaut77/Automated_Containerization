@@ -1,24 +1,25 @@
 pipeline {
     agent any
     environment {
-        IMAGE_NAME = 'trippy7/sampleapp'
-        REGISTRY_CRED = credentials('docker-cred')
-        EC2_HOST = 'ec2-user@54.197.36.28' // replace with EC2 IP
-        SSH_CRED = credentials('ec2-ssh-key')
-        
+        IMAGE_NAME   = 'trippy7/sampleapp'
+        REGISTRY_CRED = 'docker-cred'   // Jenkins credentials ID for Docker Hub
+        EC2_HOST     = 'ec2-user@54.197.36.28'  // replace with EC2 public IP
+        SSH_CRED     = 'ec2-ssh-key'   // Jenkins credentials ID for EC2 SSH key
     }
 
     stages {
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package -DskipTests'
+                dir('App_EC2') {
+                    sh 'mvn clean package -DskipTests'
+                }
             }
         }
 
         stage('Docker Build') {
             steps {
                 script {
-                    dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}")
+                    dockerImage = docker.build("${IMAGE_NAME}:${BUILD_NUMBER}", "App_EC2")
                 }
             }
         }
@@ -38,10 +39,10 @@ pipeline {
             steps {
                 sshagent([SSH_CRED]) {
                     sh """
-                      ssh -o StrictHostKeyChecking=no $EC2_HOST \\
-                      'docker stop app || true && docker rm app || true && \\
-                       docker pull ${IMAGE_NAME}:${BUILD_NUMBER} && \\
-                       docker run -d --name app -p 8080:8080 ${IMAGE_NAME}:${BUILD_NUMBER}'
+                        ssh -o StrictHostKeyChecking=no $EC2_HOST \\
+                        'docker stop app || true && docker rm app || true && \\
+                         docker pull ${IMAGE_NAME}:${BUILD_NUMBER} && \\
+                         docker run -d --name app -p 8080:8080 ${IMAGE_NAME}:${BUILD_NUMBER}'
                     """
                 }
             }
