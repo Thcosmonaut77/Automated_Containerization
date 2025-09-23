@@ -3,7 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'trippy7/sampleapp'
         REGISTRY_CRED = credentials('docker-cred')
-        EC2_HOST = 'ec2-user@<EC2_PUBLIC_IP>' // replace with EC2 IP
+        EC2_HOST = 'ec2-user@54.197.36.28' // replace with EC2 IP
         SSH_CRED = credentials('ec2-ssh-key')
         
     }
