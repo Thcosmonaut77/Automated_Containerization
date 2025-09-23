@@ -21,13 +21,13 @@ pipeline {
            steps {
               script {
                   // Write tfvars from Jenkins credentials
-                    writeFile file: 'terraform.tfvars', text: """
+                    writeFile file: 'App_EC2/terraform.tfvars', text: """
                     region        = "${env.TF_REGION}"
                     az           = "${env.TF_AZ}"
                     my_ip    = "${env.TF_MY_IP}"
                     instance_type = "${env.TF_INSTANCE_TYPE}"
                     kp            = "${env.TF_KP}"
-                    
+                    profile       = "${env.TF_PROFILE}"
                     """
 
                     sh """
