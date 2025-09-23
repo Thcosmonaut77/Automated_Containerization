@@ -15,7 +15,7 @@ pipeline {
              TF_MY_IP = credentials('tf_my_ip')
              TF_INSTANCE_TYPE = credentials('tf_instance_type')
              TF_KP = credentials('tf_kp')
-             TF_PROFILE = credentials(tf_profile)
+             TF_PROFILE = credentials('tf_profile')
 
            }
            steps {
