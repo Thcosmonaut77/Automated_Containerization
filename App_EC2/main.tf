@@ -135,6 +135,39 @@ resource "aws_instance" "instance" {
     }
 }
 
+resource "null_resource" "docker_setup" {
+  depends_on = [aws_instance.app] # replace with your EC2 resource name
+
+  provisioner "remote-exec" {
+    inline = [
+      # Update system packages
+      "sudo apt-get update -y",
+      "sudo apt-get upgrade -y",
+
+      # Install Docker
+      "sudo apt-get install -y docker.io",
+
+      # Start and enable Docker service
+      "sudo systemctl enable docker",
+      "sudo systemctl start docker",
+
+      # Add ubuntu user to docker group
+      "sudo usermod -aG docker ubuntu",
+
+      # Verify Docker installation
+      "docker --version || echo 'Docker installed!'"
+    ]
+
+    connection {
+      type        = "ssh"
+      user        = "ubuntu"
+      private_key = file("C:/Users/Ibrahim/Downloads/new.pem")
+      host        = aws_instance.instance.public_ip
+    }
+  }
+}
+
+
 output "Jenkins_server_url" {
   value       = aws_instance.instance.public_ip
   description = "App_Instance"
