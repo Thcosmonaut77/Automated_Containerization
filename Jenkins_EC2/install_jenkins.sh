@@ -33,6 +33,16 @@ sudo usermod -aG docker ubuntu
 sudo usermod -aG docker $USER 
 sudo usermod -aG docker jenkins
 
+# Install dependencies
+sudo apt-get install -y wget gnupg software-properties-common unzip
+
+echo "===== Installing Terraform 1.13.0 ====="
+cd /tmp
+wget https://releases.hashicorp.com/terraform/1.13.0/terraform_1.13.0_linux_amd64.zip
+unzip terraform_1.13.0_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
+sudo chmod +x /usr/local/bin/terraform
+
 echo "===== Enabling and starting Jenkins ====="
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
