@@ -26,7 +26,7 @@ variable "kp" {
     sensitive = true
 }
 
-variable "private_key" {
+variable "ec2-ssh-key" {
     description = "private key"
     type = string
   
