@@ -66,6 +66,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plu
 # Add users to docker group
 sudo usermod -aG docker ubuntu
 sudo usermod -aG docker $USER
+sudo usermod -aG docker jenkins
 
 
 
