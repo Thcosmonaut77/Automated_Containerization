@@ -9,6 +9,28 @@ echo "===== Updating system packages ====="
 sudo apt-get update -y
 sudo apt-get upgrade -y
 
+echo "===== Installing java ====="
+sudo apt-get install -y openjdk-21-jdk
+
+echo "===== Adding Jenkins repository and GPG key ====="
+curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
+    /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
+    https://pkg.jenkins.io/debian-stable binary/" | sudo tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+echo "===== Updating package list and installing Jenkins ====="
+sudo apt-get update -y
+sudo apt-get install -y jenkins
+
+echo "===== Installing Maven build tool ====="
+sudo apt-get install -y maven
+
+echo "===== Enabling and starting Jenkins ====="
+sudo systemctl enable jenkins
+sudo systemctl start jenkins
+
 # -------------------------------------------------------------------
 # 1. Install prerequisites
 # -------------------------------------------------------------------
@@ -29,7 +51,7 @@ sudo apt-get update -y
 sudo apt-get install -y terraform
 
 # -------------------------------------------------------------------
-# 3. Install Docker (before Jenkins)
+# 3. Install Docker 
 # -------------------------------------------------------------------
 echo "===== Installing Docker ====="
 sudo mkdir -p /etc/apt/keyrings
@@ -45,45 +67,7 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plu
 sudo usermod -aG docker ubuntu
 sudo usermod -aG docker $USER
 
-# -------------------------------------------------------------------
-# 4. Install Java (needed before Jenkins)
-# -------------------------------------------------------------------
-echo "===== Installing Java ====="
-sudo apt-get install -y openjdk-21-jdk
 
-# -------------------------------------------------------------------
-# 5. Install Jenkins
-# -------------------------------------------------------------------
-echo "===== Adding Jenkins repository and GPG key ====="
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
-    /usr/share/keyrings/jenkins-keyring.asc > /dev/null
-
-echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
-https://pkg.jenkins.io/debian-stable binary/" | sudo tee \
-/etc/apt/sources.list.d/jenkins.list > /dev/null
-
-sudo apt-get update -y
-sudo apt-get install -y jenkins
-
-# Add Jenkins user to Docker group
-sudo usermod -aG docker jenkins
-
-# Restart Jenkins so new group applies
-sudo systemctl daemon-reexec
-sudo systemctl restart jenkins
-
-# -------------------------------------------------------------------
-# 6. Install Maven
-# -------------------------------------------------------------------
-echo "===== Installing Maven ====="
-sudo apt-get install -y maven
-
-# -------------------------------------------------------------------
-# 7. Start and enable Jenkins
-# -------------------------------------------------------------------
-echo "===== Enabling Jenkins ====="
-sudo systemctl enable jenkins
-sudo systemctl start jenkins
 
 # -------------------------------------------------------------------
 # 8. Output Jenkins initial password

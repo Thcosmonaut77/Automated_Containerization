@@ -15,8 +15,8 @@ pipeline {
              TF_MY_IP = credentials('tf_my_ip')
              TF_INSTANCE_TYPE = credentials('tf_instance_type')
              TF_KP = credentials('tf_kp')
-             TF_PRIVATE_KEY = credentials('tf_private_key')
-             TF_EC2_SSH_KEY = credentials('tf_ec2_ssh_key')
+             
+             
             
              
 
@@ -30,7 +30,7 @@ pipeline {
                     my_ip    = "${env.TF_MY_IP}"
                     instance_type = "${env.TF_INSTANCE_TYPE}"
                     kp            = "${env.TF_KP}"
-                    private_key   = "${env.TF_EC2_SSH_KEY}"
+                    
 
                     
                     """
