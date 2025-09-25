@@ -136,3 +136,9 @@ resource "aws_instance" "instance" {
     }
 }
 
+# Print Jenkins Server URL
+output "App_server_url" {
+  value       = aws_instance.instance.public_ip
+  description = "App server"
+}
+
