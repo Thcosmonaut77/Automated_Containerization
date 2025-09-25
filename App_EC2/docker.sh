@@ -14,6 +14,7 @@ set -e
 
       # Add ubuntu user to docker group
       sudo usermod -aG docker ubuntu
+      sudo usermod -aG docker jenkins
 
       # Verify Docker installation
       docker --version || echo Docker installed!
