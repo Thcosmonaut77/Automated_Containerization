@@ -28,8 +28,8 @@
     </style>
 </head>
 <body>
-    <h1>Hello from Ibrahim</h1>
-    <h1>🚀 MyApp is Running Successfully!</h1>
+    <h1>ThCosmonaut says Hi</h1>
+    <h1>Fuck you Khuzeimah</h1>
     <p>Deployed on <b>Apache Tomcat</b> through <b>Jenkins CI/CD</b>.</p>
     <p>This is the default <code>index.jsp</code> landing page.</p>
 
