@@ -61,15 +61,15 @@ The pipeline builds the Java application from source, packages it into a WAR, co
 ## Architecture
 ```mermaid
 flowchart TD
-    A[Local Machine<br>(Terraform run locally to provision Jenkins EC2)] --> B[Jenkins EC2<br>- Installed via user_data<br>- Runs 2 Pipelines]
+    A[Local Machine\n(Terraform run locally to provision Jenkins EC2)] --> B[Jenkins EC2\n- Installed via user_data\n- Runs 2 Pipelines]
 
-    B --> C[Pipeline 1: Infra Deployment<br>- Terraform<br>- Provisions App EC2 instance]
-    B --> D[Pipeline 2: Container Deployment<br>- Maven build WAR<br>- Docker build image<br>- Push to Docker Hub<br>- SSH into App EC2<br>- Pull image<br>- Run container (Tomcat + WAR)]
+    B --> C[Pipeline 1: Infra Deployment\n- Terraform\n- Provisions App EC2 instance]
+    B --> D[Pipeline 2: Container Deployment\n- Maven build WAR\n- Docker build image\n- Push to Docker Hub\n- SSH into App EC2\n- Pull image\n- Run container (Tomcat + WAR)]
 
-    C --> E[App EC2<br>- Docker installed<br>- Runs container (Tomcat + WAR)]
+    C --> E[App EC2\n- Docker installed\n- Runs container (Tomcat + WAR)]
     D --> E
 
-    E --> F[End Users<br>Access app via:<br>http://<App_server_public_IP>:8080/app]
+    E --> F[End Users\nAccess app via:\nhttp://<App_server_public_IP>:8080/app]
 ```
 
 
