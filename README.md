@@ -61,13 +61,11 @@ The pipeline builds the Java application from source, packages it into a WAR, co
 ## Architecture
 ```mermaid
 flowchart LR
-    Local[Local Machine\n(Terraform run locally)] -->|Provision| Jenkins[Jenkins EC2\n- Installed via user_data]
-    
-    Jenkins -->|Pipeline 1: Infra Deployment\n(Terraform)| AppEC2[App EC2\n- Docker Installed]
-    Jenkins -->|Pipeline 2: Container Deployment\n(Maven + Docker)| AppEC2
-
-    AppEC2 -->|Run Container\n(Tomcat + WAR)| Users([End Users])
-    Users -->|Access via\nhttp://<App_server_public_IP>:8080/app| AppEC2
+    Dev[Local Machine] -->|Provision Jenkins| Jenkins[Jenkins EC2]
+    Jenkins -->|Pipeline 1: Infra Deployment| AppEC2[App EC2]
+    Jenkins -->|Pipeline 2: Container Deployment| AppEC2
+    AppEC2 -->|Run Container (Tomcat + WAR)| Users[End Users]
+    Users -->|Access via http://<App_IP>:8080/app| AppEC2
 ```
 
 
