@@ -64,7 +64,7 @@ flowchart LR
     Dev[Local Machine] -->|Provision Jenkins| Jenkins[Jenkins EC2]
     Jenkins -->|Pipeline 1: Infra Deployment| AppEC2[App EC2]
     Jenkins -->|Pipeline 2: Container Deployment| AppEC2
-    AppEC2 -->|Run Container (Tomcat + WAR)| Users[End Users]
+    AppEC2 -->|Run Container Tomcat + WAR| Users[End Users]
     Users -->|Access via http://<App_IP>:8080/app| AppEC2
 ```
 
