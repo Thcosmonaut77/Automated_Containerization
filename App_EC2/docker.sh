@@ -1,32 +1,12 @@
-#/bin/bash
-set -e
-
-# Update system packages
+#!/bin/bash
 sudo apt-get update -y
-sudo apt-get upgrade -y
 
-# Install dependencies
-sudo apt-get install -y ca-certificates curl gnupg lsb-release
-
-# Add Docker’s official GPG key
-mkdir -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-# Set up stable repository
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] \
-https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
-
-# Install Docker Engine
-apt-get update -y
-apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
-
-# Add ubuntu user to docker group
+sudo apt-get install apt-transport-https ca-certificates curl gnupg-agent software-properties-common -y
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-key fingerprint 0EBFCD88
+sudo apt-get update -y
+sudo apt-get install docker-ce docker-ce-cli containerd.io -y
 sudo usermod -aG docker ubuntu
-sudo usermod -aG docker jenkins
-
-# Restart Docker service
-sudo systemctl enable docker
-sudo systemctl start docker
-
-# Verify Docker installation
-docker --version || echo Docker installed!
+sudo usermod -aG docker $USER 
+sudo reboot
