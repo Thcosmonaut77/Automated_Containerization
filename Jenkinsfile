@@ -3,7 +3,7 @@ pipeline {
     environment {
         IMAGE_NAME   = 'trippy7/sampleapp'
         REGISTRY_CRED = 'docker-cred'   // Jenkins credentials ID for Docker Hub
-        EC2_HOST     = 'ubuntu@54.197.36.28'  // replace with EC2 public IP
+        EC2_HOST     = 'ubuntu@54.84.89.137'  // replace with EC2 public IP
         SSH_CRED     = 'ec2-ssh-key'   // Jenkins credentials ID for EC2 SSH key
     }
 
