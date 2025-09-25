@@ -1,4 +1,4 @@
-# Containerization_with_Docker
+# Automated_Containerization
 ## Project Overview
 
 This project demonstrates a complete CI/CD pipeline for deploying a Java web application on AWS.
