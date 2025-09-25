@@ -60,48 +60,16 @@ The pipeline builds the Java application from source, packages it into a WAR, co
 
 ## Architecture
 ```mermaid
-                 ┌───────────────────────────┐
-                 │        Local Machine       │
-                 │ (Terraform run locally to  │
-                 │  provision Jenkins EC2)    │
-                 └──────────────┬─────────────┘
-                                │
-                                ▼
-                 ┌───────────────────────────┐
-                 │        Jenkins EC2         │
-                 │ - Installed via user_data  │
-                 │ - Runs 2 Pipelines         │
-                 └──────────────┬─────────────┘
-                                │
-         ┌──────────────────────┼────────────────────────┐
-         │                                               │
-         ▼                                               ▼
- ┌──────────────────┐                          ┌────────────────────────┐
- │ Pipeline 1       │                          │ Pipeline 2             │
- │ Infra Deployment │                          │ Container Deployment   │
- │ - Terraform      │                          │ - Maven build WAR      │
- │ - Provisions App │                          │ - Docker build image   │
- │   EC2 instance   │                          │ - Push to Docker Hub   │
- └──────────────────┘                          │ - SSH into App EC2     │
-                                               │ - Pull image           │
-                                               │ - Run container        │
-                                               │   (Tomcat + WAR)       │
-                                               └────────────────────────┘
-                                                                │
-                                                                ▼
-                                               ┌────────────────────────┐
-                                               │        App EC2         │
-                                               │ - Docker installed     │
-                                               │ - Runs container       │
-                                               │   (Tomcat + WAR)       │
-                                               └─────────────┬──────────┘
-                                                             │
-                                                             ▼
-                                               ┌────────────────────────────────────────┐
-                                               │        End Users                       │
-                                               │ Access app via:                        │
-                                               │ http://<App_server_public_IP>:8080/app │
-                                               └────────────────────────────────────────┘
+flowchart TD
+    A[Local Machine<br>(Terraform run locally to provision Jenkins EC2)] --> B[Jenkins EC2<br>- Installed via user_data<br>- Runs 2 Pipelines]
+
+    B --> C[Pipeline 1: Infra Deployment<br>- Terraform<br>- Provisions App EC2 instance]
+    B --> D[Pipeline 2: Container Deployment<br>- Maven build WAR<br>- Docker build image<br>- Push to Docker Hub<br>- SSH into App EC2<br>- Pull image<br>- Run container (Tomcat + WAR)]
+
+    C --> E[App EC2<br>- Docker installed<br>- Runs container (Tomcat + WAR)]
+    D --> E
+
+    E --> F[End Users<br>Access app via:<br>http://<App_server_public_IP>:8080/app]
 ```
 
 
