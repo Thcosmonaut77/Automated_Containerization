@@ -1,4 +1,13 @@
 # Automated_Containerization
+
+![Terraform](https://img.shields.io/badge/IaC-Terraform-7B42BC?logo=terraform)
+![AWS](https://img.shields.io/badge/Cloud-AWS-FF9900?logo=amazonaws)
+![Jenkins](https://img.shields.io/badge/CI%2FCD-Jenkins-D24939?logo=jenkins)
+![Docker](https://img.shields.io/badge/Container-Docker-2496ED?logo=docker)
+![Tomcat](https://img.shields.io/badge/App_Server-Tomcat-F8DC75?logo=apachetomcat)
+![Maven](https://img.shields.io/badge/Build-Maven-C71A36?logo=apachemaven)
+![GitHub](https://img.shields.io/badge/Repo-GitHub-181717?logo=github)
+
 ## Project Overview
 
 This project demonstrates a complete CI/CD pipeline for deploying a Java web application on AWS.
